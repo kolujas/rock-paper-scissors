@@ -16,20 +16,66 @@
 
 */
 
+function getHumanChoice() {
+  let userPrompt = prompt("Escribí: Piedra, papel o tijera...");
+  let humanChoice = 0;
+
+  if (userPrompt == "piedra".toLowerCase()) {
+    console.log("Elegiste " + userPrompt + " 🪨");
+    humanChoice = 1;
+  } else if (userPrompt == "papel".toLowerCase()) {
+    console.log("Elegiste " + userPrompt + " 📄");
+    humanChoice = 2;
+  } else if (userPrompt == "tijera".toLowerCase()) {
+    console.log("Elegiste " + userPrompt + " ✂️");
+    humanChoice = 3;
+  }
+
+  return humanChoice;
+}
+
 function getComputerChoice(min, max) {
   const computerChoice = Math.floor(Math.random() * (max - min + 1)) + min;
 
   if (computerChoice == 1) {
-    console.log("La compu eligió PIEDRA");
+    console.log("La compu eligió 🪨 ");
   } else if (computerChoice == 2) {
-    console.log("La compu eligió PAPEL");
+    console.log("La compu eligió 📄");
   } else {
-    console.log("La compu eligió TIJERA");
+    console.log("La compu eligió ✂️");
   }
 
   return computerChoice;
 }
 
-getComputerChoice(1, 3);
-
+humanChoice = getHumanChoice();
 computerChoice = getComputerChoice(1, 3);
+
+function playRound(humanChoice, computerChoice) {
+  if (humanChoice == computerChoice) {
+    // Empate
+    console.log("Empate, ¡pelotudos!");
+  } else if (humanChoice == 1 && computerChoice == 2) {
+    // Piedra vs Papel
+    console.log("¡Gana la máquina!");
+  } else if (humanChoice == 1 && computerChoice == 3) {
+    // Piedra vs Tijera
+    console.log("¡Ganaste!");
+  } else if (humanChoice == 2 && computerChoice == 1) {
+    // Papel vs Piedra
+    console.log("¡Ganaste!");
+  } else if (humanChoice == 2 && computerChoice == 3) {
+    // Papel vs Tijera
+    console.log("¡Gana la máquina!");
+  } else if (humanChoice == 3 && computerChoice == 1) {
+    // Tijera vs Piedra
+    console.log("¡Gana la máquina!");
+  } else if (humanChoice == 3 && computerChoice == 2) {
+    // Tijera vs Papel
+    console.log("¡Ganaste!");
+  }
+}
+
+playRound(humanChoice, computerChoice);
+
+
