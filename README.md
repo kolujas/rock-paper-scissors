@@ -37,5 +37,3 @@ It was created as part of [The Odin Project's Foundations Course](https://www.th
   - User input via prompt
   - Console outputs for debugging and interaction
 - Apply **problem-solving techniques** and **pseudocode planning**.
-
-## 🏆 Outcome Example
