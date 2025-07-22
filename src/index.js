@@ -16,17 +16,21 @@
 
 */
 
+humanScore = 0;
+computerScore = 0;
+const MAX_TURNOS = 5;
+
 function getHumanChoice() {
-  let userPrompt = prompt("Escribí: Piedra, papel o tijera...");
+  let userPrompt = prompt("Escribí: Piedra, papel o tijera...").toLowerCase();
   let humanChoice = 0;
 
-  if (userPrompt == "piedra".toLowerCase()) {
+  if (userPrompt == "piedra") {
     console.log("Elegiste " + userPrompt + " 🪨");
     humanChoice = 1;
-  } else if (userPrompt == "papel".toLowerCase()) {
+  } else if (userPrompt == "papel") {
     console.log("Elegiste " + userPrompt + " 📄");
     humanChoice = 2;
-  } else if (userPrompt == "tijera".toLowerCase()) {
+  } else if (userPrompt == "tijera") {
     console.log("Elegiste " + userPrompt + " ✂️");
     humanChoice = 3;
   }
@@ -48,34 +52,57 @@ function getComputerChoice(min, max) {
   return computerChoice;
 }
 
-humanChoice = getHumanChoice();
-computerChoice = getComputerChoice(1, 3);
-
 function playRound(humanChoice, computerChoice) {
   if (humanChoice == computerChoice) {
     // Empate
-    console.log("Empate, ¡pelotudos!");
+    console.log("¡Empate!");
   } else if (humanChoice == 1 && computerChoice == 2) {
     // Piedra vs Papel
     console.log("¡Gana la máquina!");
+    return computerScore++;
   } else if (humanChoice == 1 && computerChoice == 3) {
     // Piedra vs Tijera
     console.log("¡Ganaste!");
+    return humanScore++;
   } else if (humanChoice == 2 && computerChoice == 1) {
     // Papel vs Piedra
     console.log("¡Ganaste!");
+    return humanScore++;
   } else if (humanChoice == 2 && computerChoice == 3) {
     // Papel vs Tijera
     console.log("¡Gana la máquina!");
+    return computerScore++;
   } else if (humanChoice == 3 && computerChoice == 1) {
     // Tijera vs Piedra
     console.log("¡Gana la máquina!");
+    return computerScore++;
   } else if (humanChoice == 3 && computerChoice == 2) {
     // Tijera vs Papel
     console.log("¡Ganaste!");
+    return humanScore++;
   }
 }
 
-playRound(humanChoice, computerChoice);
+function playGame() {
+  for (let i = 1; i <= MAX_TURNOS; i++) {
+    console.log("TURNO:", i);
+    let human = getHumanChoice();
+    let computer = getComputerChoice(1, 3);
+    playRound(human, computer);
+    console.log("------------------------");
+  }
+}
 
+playGame();
+console.log("PUNTAJES: ");
+console.log("Puntaje jugador: " + humanScore);
+console.log("Puntaje máquina: " + computerScore);
+console.log("------------------------");
 
+if (humanScore > computerScore) {
+  console.log("¡Ganaste la partida contra la compu!");
+} else if (computerScore > humanScore) {
+  console.log("La máquina te ganó esta vez, ¡volvé a intentar!");
+} else {
+  console.log("Empataron.");
+}
