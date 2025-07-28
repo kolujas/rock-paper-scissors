@@ -16,93 +16,107 @@
 
 */
 
-humanScore = 0;
-computerScore = 0;
+let humanScore = 0,
+  computerScore = 0,
+  humanChoice = 0;
+
 const MAX_TURNOS = 5;
+let turnoActual = 1;
 
-function getHumanChoice() {
-  let userPrompt = prompt("Escribí: Piedra, papel o tijera...").toLowerCase();
-  let humanChoice = 0;
+const botones = document.querySelectorAll(".btn");
+const elecciones = document.querySelector("#resultados div");
+const resultados = document.querySelector("#resultado-final");
 
-  if (userPrompt == "piedra") {
-    console.log("Elegiste " + userPrompt + " 🪨");
-    humanChoice = 1;
-  } else if (userPrompt == "papel") {
-    console.log("Elegiste " + userPrompt + " 📄");
-    humanChoice = 2;
-  } else if (userPrompt == "tijera") {
-    console.log("Elegiste " + userPrompt + " ✂️");
-    humanChoice = 3;
+const acciones = ["🪨", "📄", "✂️"];
+
+botones.forEach((element) => {
+  element.addEventListener("click", (e) => {
+    const accion = e.target.textContent.toLowerCase();
+
+    if (!comprobarTurno()) return true;
+
+    crearElemento("h5", "TURNO ACTUAL: " + turnoActual);
+    realizarAccion(accion);
+
+    checkTurn();
+
+    // chequearFinDelJuego();
+  });
+});
+
+function checkTurn() {
+  let computerChoice = getComputerChoice();
+  const resultadoRonda = playRound(humanChoice, computerChoice);
+  crearElemento("p", resultadoRonda);
+
+  if (turnoActual === MAX_TURNOS) {
+    showResults();
   }
-
-  return humanChoice;
+  turnoActual++;
 }
 
-function getComputerChoice(min, max) {
-  const computerChoice = Math.floor(Math.random() * (max - min + 1)) + min;
-
-  if (computerChoice == 1) {
-    console.log("La compu eligió 🪨 ");
-  } else if (computerChoice == 2) {
-    console.log("La compu eligió 📄");
-  } else {
-    console.log("La compu eligió ✂️");
-  }
-
-  return computerChoice;
+function getComputerChoice() {
+  const index = Math.floor(Math.random() * 3);
+  const cpuChoice = acciones[index];
+  crearElemento("p", `La máquina eligió ${cpuChoice}`);
+  return index + 1;
 }
 
 function playRound(humanChoice, computerChoice) {
-  if (humanChoice == computerChoice) {
-    // Empate
-    console.log("¡Empate!");
-  } else if (humanChoice == 1 && computerChoice == 2) {
-    // Piedra vs Papel
-    console.log("¡Gana la máquina!");
-    return computerScore++;
-  } else if (humanChoice == 1 && computerChoice == 3) {
-    // Piedra vs Tijera
-    console.log("¡Ganaste!");
-    return humanScore++;
-  } else if (humanChoice == 2 && computerChoice == 1) {
-    // Papel vs Piedra
-    console.log("¡Ganaste!");
-    return humanScore++;
-  } else if (humanChoice == 2 && computerChoice == 3) {
-    // Papel vs Tijera
-    console.log("¡Gana la máquina!");
-    return computerScore++;
-  } else if (humanChoice == 3 && computerChoice == 1) {
-    // Tijera vs Piedra
-    console.log("¡Gana la máquina!");
-    return computerScore++;
-  } else if (humanChoice == 3 && computerChoice == 2) {
-    // Tijera vs Papel
-    console.log("¡Ganaste!");
-    return humanScore++;
+  if (humanChoice === computerChoice) {
+    return "¡Empate!";
+  }
+  if (
+    (humanChoice === 1 && computerChoice === 3) || // piedra gana a tijera
+    (humanChoice === 2 && computerChoice === 1) || // papel gana a piedra
+    (humanChoice === 3 && computerChoice === 2) // tijera gana a papel
+  ) {
+    humanScore++;
+    return "¡Ganaste!";
+  } else {
+    computerScore++;
+    return "¡Gana la máquina!";
+  }
+}
+function showResults() {
+  crearElemento("p", "------------------");
+  crearElemento("p", "Resultados: ");
+
+  crearElemento("p", "Puntaje jugador: " + humanScore);
+  crearElemento("p", "Puntaje máquina: " + computerScore);
+
+  if (humanScore > computerScore) {
+    crearElemento("p", "¡Ganaste la partida contra la compu!");
+  } else if (computerScore > humanScore) {
+    crearElemento("p", "La máquina te ganó esta vez, ¡volvé a intentar!");
+  } else {
+    crearElemento("p", "¡Empataron!");
   }
 }
 
-function playGame() {
-  for (let i = 1; i <= MAX_TURNOS; i++) {
-    console.log("TURNO:", i);
-    let human = getHumanChoice();
-    let computer = getComputerChoice(1, 3);
-    playRound(human, computer);
-    console.log("------------------------");
+function realizarAccion(nombreAccion) {
+  crearElemento("p", `Elegiste ${nombreAccion}`);
+
+  if (nombreAccion === "piedra") {
+    humanChoice = 1;
+  } else if (nombreAccion === "papel") {
+    humanChoice = 2;
+  } else if (nombreAccion === "tijera") {
+    humanChoice = 3;
   }
 }
 
-playGame();
-console.log("PUNTAJES: ");
-console.log("Puntaje jugador: " + humanScore);
-console.log("Puntaje máquina: " + computerScore);
-console.log("------------------------");
+function comprobarTurno() {
+  if (turnoActual > MAX_TURNOS) {
+    botones.forEach((btn) => (btn.disabled = true));
+    return false;
+  }
 
-if (humanScore > computerScore) {
-  console.log("¡Ganaste la partida contra la compu!");
-} else if (computerScore > humanScore) {
-  console.log("La máquina te ganó esta vez, ¡volvé a intentar!");
-} else {
-  console.log("Empataron.");
+  return true;
+}
+
+function crearElemento(elemento, texto) {
+  const elementoCreado = document.createElement(elemento);
+  elementoCreado.textContent = texto;
+  elecciones.append(elementoCreado);
 }

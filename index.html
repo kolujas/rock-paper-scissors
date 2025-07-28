@@ -3,10 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./src/styles.css">
   <title>Juego - Piedra, Papel o Tijera - Juego</title>
 </head>
 <body>
   <h1>Juego Piedra, Papel o Tijera</h1>
+
+  <section>
+    <div>
+      <button class="btn">🪨</button>
+      <button class="btn">📄</button>
+      <button class="btn">✂️</button>
+    </div>
+  </section>
+
+  <section id="resultados">
+    <div>
+      <h3>Mostrar elecciones</h3>
+      <div class="round-container"></div>
+    </div>
+
+    <div id="resultado-final">
+      <h3></h3>
+    </div>
+  </section>
+  
   <script src="./src/index.js"></script>
 </body>
 </html>
