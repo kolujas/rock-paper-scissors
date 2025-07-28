@@ -17,8 +17,7 @@
 */
 
 let humanScore = 0,
-  computerScore = 0,
-  humanChoice = 0;
+  computerScore = 0;
 
 const MAX_TURNOS = 5;
 let turnoActual = 1;
@@ -27,24 +26,24 @@ const botones = document.querySelectorAll(".btn");
 const elecciones = document.querySelector("#resultados div");
 const resultados = document.querySelector("#resultado-final");
 
-const acciones = ["🪨", "📄", "✂️"];
+const acciones = ["piedra 🪨", "papel 📄", "tijera ✂️"];
 
 botones.forEach((element) => {
   element.addEventListener("click", (e) => {
-    const accion = e.target.textContent.toLowerCase();
+    const accion = e.target.textContent.trim().toLowerCase();
 
     if (!comprobarTurno()) return true;
 
     crearElemento("h5", "TURNO ACTUAL: " + turnoActual);
-    realizarAccion(accion);
 
-    checkTurn();
+    const humanChoice = realizarAccion(accion);
+    checkTurn(humanChoice);
 
     // chequearFinDelJuego();
   });
 });
 
-function checkTurn() {
+function checkTurn(humanChoice) {
   let computerChoice = getComputerChoice();
   const resultadoRonda = playRound(humanChoice, computerChoice);
   crearElemento("p", resultadoRonda);
@@ -97,13 +96,9 @@ function showResults() {
 function realizarAccion(nombreAccion) {
   crearElemento("p", `Elegiste ${nombreAccion}`);
 
-  if (nombreAccion === "piedra") {
-    humanChoice = 1;
-  } else if (nombreAccion === "papel") {
-    humanChoice = 2;
-  } else if (nombreAccion === "tijera") {
-    humanChoice = 3;
-  }
+  if (nombreAccion.includes("piedra")) return 1;
+  if (nombreAccion.includes("papel")) return 2;
+  if (nombreAccion.includes("tijera")) return 3;
 }
 
 function comprobarTurno() {
